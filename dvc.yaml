@@ -1,0 +1,40 @@
+stages:
+
+  split:
+    cmd: python src/make_iris.py data/iris_data.csv
+    deps:
+    - src/make_iris.py
+    - data/iris_data.csv
+    params:
+    # use '.' operator to specify only specific parameters.
+    - split
+    # outs is the mutating part of the stage
+    outs:
+    - models/data/test.csv
+    - models/data/train.csv
+
+  train:
+    cmd: python src/modelbuild.py
+    # dependencies are provided for their tracking.
+    deps:
+    - models/data/train.csv
+    - src/modelbuild.py
+    # only for logging and tracking of parameters.
+    params:
+    - train
+    # for tracking dvc live folder
+    outs:
+    - dvclive
+    - models/LRmodel.pkl
+
+params:
+- dvclive/params.yaml
+artifacts:
+  LRmodel:
+    path: models/LRmodel.pkl
+    type: model
+metrics:
+- dvclive/metrics.json
+plots:
+- dvclive/plots/metrics:
+    x: step

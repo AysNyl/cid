@@ -1,0 +1,54 @@
+schema: '2.0'
+stages:
+  train:
+    cmd: python src/modelbuild.py
+    deps:
+    - path: models/data/train.csv
+      hash: md5
+      md5: 97ecc530646949ec65528b143241181f
+      size: 3017
+    - path: src/modelbuild.py
+      hash: md5
+      md5: 57ed12429ea4fd8919a863a703c9b523
+      size: 5312
+    params:
+      params.yaml:
+        train:
+          c: 0.001
+          max_iter: 2000
+          epochs: 15
+    outs:
+    - path: dvclive
+      hash: md5
+      md5: e2edfd8c0cc89e004bb66d1955dce7cd.dir
+      size: 1255
+      nfiles: 5
+    - path: models/LRmodel.pkl
+      hash: md5
+      md5: 0133c8ee2ce25924bd89242e202ae91e
+      size: 2798
+  split:
+    cmd: python src/make_iris.py data/iris_data.csv
+    deps:
+    - path: data/iris_data.csv
+      hash: md5
+      md5: 500a0acbd112b7c512929eac892f9864
+      size: 4009
+    - path: src/make_iris.py
+      hash: md5
+      md5: e6611bdaba3a49c7ab928e5a86f31f06
+      size: 817
+    params:
+      params.yaml:
+        split:
+          test_size: 0.5
+          random_state: 7
+    outs:
+    - path: models/data/test.csv
+      hash: md5
+      md5: ed9ce2e2c70f6d7788ca64ee8a333e3a
+      size: 1051
+    - path: models/data/train.csv
+      hash: md5
+      md5: 97ecc530646949ec65528b143241181f
+      size: 3017

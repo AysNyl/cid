@@ -1,0 +1,4 @@
+[core]
+    remote = localstr
+['remote "localstr"']
+    url = ../../local_storage
