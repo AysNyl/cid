@@ -9,8 +9,8 @@ stages:
       size: 3017
     - path: src/modelbuild.py
       hash: md5
-      md5: 57ed12429ea4fd8919a863a703c9b523
-      size: 5312
+      md5: ea41e0563740fdc00aefab62375956c9
+      size: 5404
     params:
       params.yaml:
         train:
@@ -20,13 +20,13 @@ stages:
     outs:
     - path: dvclive
       hash: md5
-      md5: e2edfd8c0cc89e004bb66d1955dce7cd.dir
-      size: 1255
+      md5: 20268a2d7dd00ad174c42cd4c0694f8b.dir
+      size: 1254
       nfiles: 5
     - path: models/LRmodel.pkl
       hash: md5
-      md5: 0133c8ee2ce25924bd89242e202ae91e
-      size: 2798
+      md5: 8784e9a242de7445f8b147c503e902e0
+      size: 2974
   split:
     cmd: python src/make_iris.py data/iris_data.csv
     deps:

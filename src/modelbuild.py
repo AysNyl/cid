@@ -29,6 +29,21 @@ with open("params.yaml", 'r') as fpm:
     params = yaml.safe_load(fpm)['train']
 
 NUM_EPOCHS = params["epochs"]
+train = pd.read_csv(r"C:\Users\Ayush\cid\models\data\train.csv")
+
+X = train.drop(columns=['species'])
+y = train['species']
+
+# Clt = ColumnTransformer([('input', StandardScaler(), [2, 3])],
+#                          remainder='drop')
+Clt = ColumnTransformer([('standard scaler', StandardScaler(), ['petal_length', 'petal_width'])],
+                        remainder='drop')
+
+
+Clr = LogisticRegression(penalty='l2', C=params['c'], max_iter=params['max_iter'])
+
+opline = Pipeline([('column transformer', Clt),
+                    ('Logistic Regression', Clr)])
 
 with Live() as live:
     
@@ -51,16 +66,6 @@ with Live() as live:
         #     ("Random Forest", clf_random_forest),
         #     ("Ensemble", clf_ensemble),
         # ]
-
-        train = pd.read_csv(r"C:\Users\Ayush\cid\data\train.csv")
-
-        Clt = ColumnTransformer([('input', StandardScaler(), [2, 3])],
-                                 remainder='drop')
-
-        Clr = LogisticRegression(penalty='l2', C=params['c'], max_iter=params['max_iter'])
-
-        opline = Pipeline([('column transformer', Clt),
-                           ('Logistic Regression', Clr)])
         
         '''pipelines will always pass y through unchanged. 
         Do the transformation outside the pipeline.
@@ -69,11 +74,8 @@ with Live() as live:
         (This is a known design flaw in scikit-learn, 
         but it's never been pressing enough to change or extend the API.)'''
 
-        X = train.drop(columns=['species'])
-        y = train['species']
-
         # unworkabe with string classification
-        mdl = TransformedTargetRegressor(opline, transformer=LabelEncoder())
+        # mdl = TransformedTargetRegressor(opline, transformer=LabelEncoder())
 
         metrics = cross_validate(opline, X, y, scoring='accuracy', cv=5)
 
