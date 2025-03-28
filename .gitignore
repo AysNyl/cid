@@ -3,3 +3,5 @@
 /dvclive
 /models
 /venv
+/mlruns
+/mlartifacts
